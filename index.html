@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacking Sections</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'IBM Plex Sans', sans-serif; }
+
+    .background {
+      height: 100vh;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .background h1 { font-size: 3rem; color: #001432; text-align: center; }
+    .background .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      font-size: 1rem;
+      color: #999;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    .stacking-container { position: relative; }
+
+    .section {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+    .section-image { position: absolute; top: 0; left: 0; object-fit: contain; }
+    .section-1 .section-image { width: 500px; height: auto; }
+    .section-2 .section-image { width: 400px; height: auto; }
+    .section-3 .section-image { width: 400px; height: auto; }
+
+    .section-text {
+      position: absolute;
+      right: 320px;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 1000px;
+    }
+    .section-text h2 { font-size: 3rem; margin-bottom: 1rem; }
+    .section-text p { font-size: 1.2rem; line-height: 1.7; opacity: 0.9; }
+
+    .section-1 { background: #001432; color: white; z-index: 2; }
+    .section-2 { background: white; color: #001432; z-index: 3; }
+    .section-3 { background: #001432; color: white; z-index: 4; }
+
+    .footer {
+      height: 50vh;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #001432;
+      font-size: 1.5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Dot Navigation */
+    .dot-nav {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .dot-nav.visible { opacity: 1; }
+
+    .dot {
+      width: 13px;
+      height: 13px;
+      background: rgba(150, 150, 150, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot:hover { transform: scale(1.3); }
+
+    /* Active dot colors for each section */
+    .dot.active-1 { background: #BEA055; }
+    .dot.active-2 { background: #E64115; }
+    .dot.active-3 { background: #1E78FF; }
+  </style>
+</head>
+<body>
+
+  <section class="background">
+    <h1>Welcome</h1>
+    <span class="scroll-hint">↓ Scroll down ↓</span>
+  </section>
+
+  <div class="stacking-container">
+    <section class="section section-1" data-section="1">
+      <img src="img/EHFCLe.png" alt="EHF Champions League" class="section-image">
+      <div class="section-text">
+        <p>The EHF Champions League was introduced in 1993 and is the most important club handball competition for men's and women’s teams in Europe and involves the leading teams from the top European nations. Since the 2009/10 season the semi-finals and final of the EHF Champions League are played over the course of one weekend. The EHF FINAL4 Men is held in the LANXESS arena in Cologne and the EHF FINAL4 Women in the MVM Dome in Budapest.</p>
+      </div>
+    </section>
+
+    <section class="section section-2" data-section="2">
+      <img src="img/EHF_European_League_2020.png" alt="EHF European League" class="section-image">
+      <div class="section-text">
+        <p>The EHF European League was introduced in 2020 and replaced the EHF Cup as the second-tier competition of European club handball. The semi-finals and final of the EHF European League are played over the course of one weekend. The first ever EHF Finals Men were played in the SAP Arena in Mannheim, Germany in 2021. The first edition of the EHF Finals Women was hosted in Baia Mare, Romania.</p>
+      </div>
+    </section>
+
+    <section class="section section-3" data-section="3">
+      <img src="img/EHF_European_Cup.png" alt="EHF European Cup" class="section-image">
+      <div class="section-text">
+        <p>The EHF European Cup was introduced in 2020 and is the third-tier competition of European club handball, after the EHF Champions League and the EHF European League. In 1993 the EHF City Cup was founded; it was renamed EHF Challenge Cup in 2000 and since the 2020/21 season now holds the official competition name EHF European Cup.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Dot Navigation -->
+  <nav class="dot-nav">
+    <div class="dot" data-target="1"></div>
+    <div class="dot" data-target="2"></div>
+    <div class="dot" data-target="3"></div>
+  </nav>
+
+  <footer class="footer">
+    <p>End of page</p>
+  </footer>
+
+  <script>
+    const dots = document.querySelectorAll('.dot');
+    const sections = document.querySelectorAll('.section');
+    const dotNav = document.querySelector('.dot-nav');
+    const stackingContainer = document.querySelector('.stacking-container');
+
+    // Click to scroll to section
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = dot.dataset.target;
+        const section = document.querySelector(`.section-${target}`);
+        const containerTop = stackingContainer.offsetTop;
+        const sectionIndex = parseInt(target) - 1;
+        const scrollPosition = containerTop + (sectionIndex * window.innerHeight);
+        window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+      });
+    });
+
+    // Update active dot on scroll
+    function updateActiveDot() {
+      const containerRect = stackingContainer.getBoundingClientRect();
+      
+      // Show/hide dot nav based on whether we're in the stacking container
+      if (containerRect.top <= 0 && containerRect.bottom > window.innerHeight * 0.5) {
+        dotNav.classList.add('visible');
+      } else {
+        dotNav.classList.remove('visible');
+      }
+
+      // Determine which section is active
+      let activeSection = null;
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.5) {
+          activeSection = section.dataset.section;
+        }
+      });
+
+      // Update dots
+      dots.forEach(dot => {
+        dot.className = 'dot';
+        if (dot.dataset.target === activeSection) {
+          dot.classList.add(`active-${activeSection}`);
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveDot);
+    updateActiveDot();
+  </script>
+
+</body>
+</html>
